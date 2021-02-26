@@ -1,0 +1,66 @@
+service: api-dynamodb-service
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  tracing:
+    lambda: true
+    apiGateway: true
+  environment:
+    DYNAMODB_TABLE:
+      "Fn::ImportValue": "vehicle-serverless-table-${self:provider.stage}"
+
+  iamRoleStatements:
+    - ${file(../../serverless.common.yml):lambdaPolicyXRay}
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/vehicle-serverless-table-${self:provider.stage}"
+
+plugins:
+  - serverless-bundle
+
+functions:
+  createVehicle:
+    handler: src/handlers/create.main
+    events:
+      - http:
+          path: vehicle
+          method: post
+          cors: true
+  lisVehicles:
+    handler: src/handlers/list.main
+    events:
+      - http:
+          path: vehicles
+          method: get
+          cors: true
+  getVehicle:
+    handler: src/handlers/get.main
+    events:
+      - http:
+          path: vehicle/{id}
+          method: get
+          cors: true
+  deleteVehicle:
+    handler: src/handlers/delete.main
+    events:
+      - http:
+          path: vehicle/{id}
+          method: delete
+          cors: true
+  updateVehicle:
+    handler: src/handlers/update.main
+    events:
+      - http:
+          path: vehicle/{id}
+          method: put
+          cors: true
