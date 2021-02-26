@@ -1,0 +1,23 @@
+{
+  "name": "event-driven-serverless-app-monorepo",
+  "version": "1.0.0",
+  "description": "Event driven serverless application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgederin/event-driven-serverless-app-monorepo.git"
+  },
+  "author": "Ruslan Gederin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rgederin/event-driven-serverless-app-monorepo/issues"
+  },
+  "homepage": "https://github.com/rgederin/event-driven-serverless-app-monorepo#readme",
+  "devDependencies": {
+    "aws-sdk": "^2.852.0",
+    "serverless-bundle": "^4.2.1"
+  }
+}
