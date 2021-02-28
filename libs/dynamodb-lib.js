@@ -8,4 +8,5 @@ export default {
     scan: (params) => client.scan(params).promise(),
     update: (params) => client.update(params).promise(),
     delete: (params) => client.delete(params).promise(),
+    batchWrite: (params) => client.batchWrite(params).promise()
 };

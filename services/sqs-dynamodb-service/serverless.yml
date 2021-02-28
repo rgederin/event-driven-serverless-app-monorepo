@@ -1,0 +1,39 @@
+service: sqs-dynamodb-service
+frameworkVersion: "2"
+
+custom:
+  sqs_arn: arn:aws:sqs:${opt:region, self:provider.region}:530260462866:vehicle-serverless-queue-${self:provider.stage}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  tracing:
+    lambda: true
+  environment:
+    DYNAMODB_TABLE:
+      "Fn::ImportValue": "vehicle-serverless-table-${self:provider.stage}"
+
+  iamRoleStatements:
+    - ${file(../../serverless.common.yml):lambdaPolicyXRay}
+    - Effect: Allow
+      Action:
+        - dynamodb:BatchWriteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/vehicle-serverless-table-${self:provider.stage}"
+    - Effect: Allow
+      Action:
+        - "sqs:*"
+      Resource: arn:aws:sqs:${opt:region, self:provider.region}:*:vehicle-serverless-queue-${self:provider.stage}
+
+plugins:
+  - serverless-bundle
+
+functions:
+  processSqsMessage:
+    handler: src/handlers/processSqsMessage.main
+    events:
+      - sqs:
+          arn: ${self:custom.sqs_arn}
+          batchSize: 1
