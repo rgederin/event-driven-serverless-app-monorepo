@@ -1,0 +1,6 @@
+{
+    "pathParameters": {
+        "id": "939e1abc-61f4-4157-9ccf-c41fa828fcf8"
+    },
+    "body": "{\"vehicle_brand\":\"test_brand_updated\",\"vehicle_model\":\"test_model_updated\", \"vehicle_year\":\"2021\"}"
+}

@@ -1,3 +1,20 @@
+# To deploy whole service execute:
+#     sls deploy
+#
+# To deploy separate functions execute:
+#     sls deploy -f createVehicle
+#     sls deploy -f listVehicles
+#     sls deploy -f getVehicle
+#     sls deploy -f deleteVehicle
+#     sls deploy -f updateVehicle
+#
+# To invoke  functions execute:
+#     sls invoke [local] -f createVehicle -p events/get-vehicle.json
+#     sls invoke [local] -f listVehicles
+#     sls invoke [local] -f getVehicle -p events/get-vehicle.json
+#     sls invoke [local] -f updateVehicle -p events/get-vehicle.json
+#     sls invoke [local] -f deleteVehicle -p events/get-vehicle.json
+
 service: api-dynamodb-service
 frameworkVersion: "2"
 
@@ -36,7 +53,7 @@ functions:
           path: vehicle
           method: post
           cors: true
-  lisVehicles:
+  listVehicles:
     handler: src/handlers/list.main
     events:
       - http:
